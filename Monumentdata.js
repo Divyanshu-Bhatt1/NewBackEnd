@@ -63,7 +63,7 @@ router.post('/register', (req, res) => {
     }
 
     // Extract other fields from the request
-    const { agencyName, email, password, contactNumber, monumentName,city,state,pincode,description,price} = req.body;
+    const { agencyName,MonumentName, email, password,desc, contactNumber, ticketPrice,MonumentLogo,city,state,pincode,imageUrl} = req.body;
 
 
 
@@ -88,14 +88,22 @@ const location1 = {
       // Create a new agency with the uploaded file path
       const newAgency = new Agency({
         agencyName,
+        MonumentName,
         email,
-        desc:description,
         password: hashedPassword,
+        desc,
         contactNumber,
-        ticketPrice:price,
-        MonumentLogo: req.file ? req.file.filename : '', // Store the file name if uploaded
-       MonumentName: monumentName,
+        ticketPrice,
+        MonumentLogo, // Store the file name if uploaded
         location:location1,
+        totalAvailableTicket:1000,
+        totalRevenue:0,
+        timing:"8 A.M. - 6 P.M.",
+        imageUrl,
+        guides:[],
+        events:[],
+        tickets:[],
+        bookings:[]
       });
 
       // Save to the database
