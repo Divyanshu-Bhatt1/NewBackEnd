@@ -1,15 +1,17 @@
+
 const mongoose = require('mongoose');
 
 const MonumentSchema = new mongoose.Schema({
   
   agencyName: {
     type: String,
-    required: true,
+    required: true
   },
   MonumentName: {
     type: String,
     required: true,
     trim: true,
+    unique: true
   },
   email: {
     type: String,
@@ -24,15 +26,12 @@ const MonumentSchema = new mongoose.Schema({
   },
   desc:{
     type:String,
-    required:true
-  },
+    // required:true
+  }
+  ,
   contactNumber: {
     type: String,
     required: true,
-  },
-  ticketPrice:{
-type:String,
-required:true
   },
   MonumentLogo: {
     type: String,
@@ -52,24 +51,28 @@ required:true
       trim: true,
     },
   },
-  status: {
-    type: String,
-    enum: ['active', 'inactive'],
-    default: 'active',
-  },
-  guides:[
-  ],
   events: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Event',
     },
   ],
-  imageUrl:[
-    {
-      type:String
-    }
-  ],
+totalAvailableTicket:{
+   type:Number,
+   default:1000
+},
+ticketPrice:{
+  type:Number,
+  default:100
+},
+totalRevenue:{
+  type:Number,
+  default:0
+},
+timing:{
+  type: String
+    // required: true,
+},
   bookings: [
     {
       month: {
@@ -80,8 +83,22 @@ required:true
         type: Number,
         default: 0, // Default number of bookings for this month
       },
+      monthlyRevenue:{
+        type: Number,
+        default: 0,
+      }
     },
-  ]
+  ],
+  tickets: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Ticket' // Reference to the Ticket model
+  }],
+  imageUrl:[
+    {
+      type:String
+    }
+  ],
+  guides:[]
 });
 
 // Create a method to increment the booking count for a specific month
@@ -105,6 +122,6 @@ MonumentSchema.methods.incrementBookingCount = function(dateString, count) {
   return this.save(); // Save the updated document
 };
 
-const Agency = mongoose.model('Monument', MonumentSchema);
+const Agency = mongoose.model('Monument1', MonumentSchema);
 
 module.exports = Agency;
