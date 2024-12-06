@@ -120,6 +120,51 @@ const location1 = {
 });
 
 
+router.post('/event-creation',authenticateToken, async (req, res) => {
+     
+   // Extract the monument ID from the URL
+    const {monumentId, eventName, totalTicketsAvailable, eventDate, eventTime, ticketPrice, description,audienceType,category} = req.body;
+   
+    try {
+      // Find the agency (monument) by ID
+      const monument = await Agency.findOne({_id:monumentId});
+      if (!monument) {
+        return res.status(404).json({ error: 'Agency (Monument) not found' });
+      }
+  
+      // Create a new event linked to this agency
+      const newEvent = new Event({
+        eventName,
+        MonumentId: monumentId, // Link the event to the monument
+        eventTotalTicketsAvailable:totalTicketsAvailable,
+        eventDate,
+        eventTime,
+        eventTicketPrice: ticketPrice,
+        description,
+        audience_type:audienceType,
+        category
+      });
+  console.log(audienceType)
+      // Save the event to the database
+      const savedEvent = await newEvent.save();
+  
+      // Optionally, you can push the event ID to an events array in the monument if needed
+      if (!monument.events) {
+        monument.events = []; // Initialize if it doesn't exist
+      }
+      monument.events.push(savedEvent._id);
+      await monument.save();
+  
+      res.status(201).json({
+        message: 'Event created successfully',
+        event: savedEvent,
+      });
+    } catch (error) {
+      console.error('Error creating event:', error);
+      res.status(500).json({ error: 'Server error' });
+    }
+  });
+
 
   
 module.exports = router;
