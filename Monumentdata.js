@@ -63,7 +63,7 @@ router.post('/register', (req, res) => {
     }
 
     // Extract other fields from the request
-    const { agencyName,MonumentName, email, password,desc, contactNumber, ticketPrice,MonumentLogo,city,state,pincode,imageUrl} = req.body;
+    const { agencyName,MonumentName, email, password,desc, contactNumber, ticketPrice,MonumentLogo,city,state,pincode,imageUrl,iframe} = req.body;
 
 
 
@@ -103,7 +103,8 @@ const location1 = {
         guides:[],
         events:[],
         tickets:[],
-        bookings:[]
+        bookings:[],
+        iframe
       });
 
       // Save to the database
