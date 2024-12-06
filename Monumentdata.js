@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
 const Agency = require('./models/agency'); // Import the Agency model
-
+const Event =require('./models/event');
 const crypto = require('crypto');
 const multer = require('multer');
 const path = require('path');
