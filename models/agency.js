@@ -98,7 +98,10 @@ timing:{
       type:String
     }
   ],
-  guides:[]
+  guides:[],
+  iframe:{
+      type:String
+    }
 });
 
 // Create a method to increment the booking count for a specific month
