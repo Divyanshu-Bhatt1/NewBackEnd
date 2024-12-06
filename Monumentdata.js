@@ -120,7 +120,7 @@ const location1 = {
 });
 
 
-router.post('/event-creation',authenticateToken, async (req, res) => {
+router.post('/event-creation', async (req, res) => {
      
    // Extract the monument ID from the URL
     const {monumentId, eventName, totalTicketsAvailable, eventDate, eventTime, ticketPrice, description,audienceType,category} = req.body;
