@@ -169,7 +169,7 @@ router.post('/event-creation', async (req, res) => {
 
 router.post('/update-category', async (req, res) => {
   const { monumentId, category } = req.body; // Extract monumentId and category from the request body
-
+  console.log( monumentId, category);
   try {
     // Use findOneAndUpdate to update if the agency exists, or create a new one if it doesn't
     const updatedMonument = await Agency.findOneAndUpdate(
