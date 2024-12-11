@@ -166,5 +166,43 @@ router.post('/event-creation', async (req, res) => {
   });
 
 
+
+router.post('/update-category', async (req, res) => {
+  const { monumentId, category } = req.body; // Extract monumentId and category from the request body
+
+  try {
+    // Find the agency (monument) by ID
+    let monument = await Agency.findOne({ _id: monumentId });
+
+    if (monument) {
+      // If the agency exists, update the category
+      monument.category = category;
+      await monument.save();
+
+      res.status(200).json({
+        message: 'Category updated successfully',
+        monument,
+      });
+    } else {
+      // If the agency doesn't exist, create a new one
+      const newMonument = new Agency({
+        _id: monumentId,
+        category,
+      });
+
+      const savedMonument = await newMonument.save();
+
+      res.status(201).json({
+        message: 'Category created successfully',
+        monument: savedMonument,
+      });
+    }
+  } catch (error) {
+    console.error('Error updating or creating category:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
   
 module.exports = router;
