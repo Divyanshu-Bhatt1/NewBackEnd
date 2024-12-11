@@ -171,38 +171,22 @@ router.post('/update-category', async (req, res) => {
   const { monumentId, category } = req.body; // Extract monumentId and category from the request body
 
   try {
-    // Find the agency (monument) by ID
-    let monument = await Agency.findOne({ _id: monumentId });
+    // Use findOneAndUpdate to update if the agency exists, or create a new one if it doesn't
+    const updatedMonument = await Agency.findOneAndUpdate(
+      { _id: monumentId }, // Query to find the agency by ID
+      { $set: { category } }, // Update the category field
+      { new: true, upsert: true } // Return the updated document and create it if it doesn't exist
+    );
 
-    if (monument) {
-      // If the agency exists, update the category
-      monument.category = category;
-      await monument.save();
-
-      res.status(200).json({
-        message: 'Category updated successfully',
-        monument,
-      });
-    } else {
-      // If the agency doesn't exist, create a new one
-      const newMonument = new Agency({
-        _id: monumentId,
-        category,
-      });
-
-      const savedMonument = await newMonument.save();
-
-      res.status(201).json({
-        message: 'Category created successfully',
-        monument: savedMonument,
-      });
-    }
+    res.status(200).json({
+      message: 'Category updated successfully',
+      monument: updatedMonument,
+    });
   } catch (error) {
     console.error('Error updating or creating category:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
-
 
   
 module.exports = router;
